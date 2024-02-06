@@ -17,8 +17,8 @@ public class Main {
 
     public static String calc(String input) {
         Converter converter = new Converter();
-        String[] number = new String[0];
-        char operator = 0;
+        String[] number;
+        char operator;
         if (input.contains("+")) {
             number = input.split("\\+");
             operator = '+';
@@ -32,31 +32,16 @@ public class Main {
             number = input.split("/");
             operator = '/';
         } else {
-            try {
-                throw new ArithmeticException();
-            } catch (ArithmeticException e) {
-                System.out.println("Строка не является математической операцией");
-                System.exit(0);
-            }
+            throw new ArithmeticException("Строка не является математической операцией");
         }
         if (number.length != 2) {
-            try {
-                throw new ArithmeticException();
-            } catch (ArithmeticException e) {
-                System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-                System.exit(0);
-            }
+            throw new ArithmeticException("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
         }
         number[0] = number[0].replaceAll("\\s", "");
         number[1] = number[1].replaceAll("\\s", "");
 
         if ((converter.isRome(number[0]) != converter.isRome(number[1])) || (number[0].matches("\\d+") != number[1].matches("\\d+"))) {
-            try {
-                throw new ArithmeticException();
-            } catch (ArithmeticException e) {
-                System.out.println("Используются одновременно разные системы счисления");
-                System.exit(0);
-            }
+            throw new ArithmeticException("Используются одновременно разные системы счисления");
         }
 
         int a, b;
@@ -70,12 +55,7 @@ public class Main {
         }
 
         if (a > MAX_VALUE || b > MAX_VALUE || a < MIN_VALUE || b < MIN_VALUE) {
-            try {
-                throw new ArithmeticException();
-            } catch (ArithmeticException e) {
-                System.out.println("Значения должны быть от 1 до 10 или от I до X");
-                System.exit(0);
-            }
+            throw new ArithmeticException("Значения должны быть от 1 до 10 или от I до X");
         }
         int result = 0;
         result = switch (operator) {
@@ -87,12 +67,7 @@ public class Main {
         };
         if (isRome) {
             if (result < 1) {
-                try {
-                    throw new ArithmeticException();
-                } catch (ArithmeticException e) {
-                    System.out.println("В римской системе нет отрицательных чисел");
-                    System.exit(0);
-                }
+                throw new ArithmeticException("В римской системе нет отрицательных чисел");
             }
             return converter.intToRome(result);
         } else {
